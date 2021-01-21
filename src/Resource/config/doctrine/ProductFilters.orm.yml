@@ -5,26 +5,13 @@ Acme\StoreBundle\Entity\Product:
     id:
       type: integer
       generator: { strategy: AUTO }
-  manyToMany:
-    productFilters:
-      targetEntity: productsFilters
-      joinTable:
-        name: product
-        joinColumns:
-          product_id:
-            referencedColumnName: id
-            onDelete: CASCADE
-        inverseJoinColumns:
-          product_id:
-            referencedColumnName: id
-            onDelete: CASCADE
   fields:
     product_id:
       type: string
       length: 200
-    name:
+    filterGroupCode:
       type: string
       length: 200
-    description:
+    brand:
       type: string
       length: 200
