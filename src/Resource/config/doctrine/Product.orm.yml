@@ -5,6 +5,21 @@ Acme\StoreBundle\Entity\Product:
     id:
       type: integer
       generator: { strategy: AUTO }
+  manyToOne:
+    catalog:
+      targetEntity: App\Entity\Catalog
+      inversedBy: products
+      joinColumn:
+        nullable: false
+    manyToMany:
+      productFilters:
+        targetEntity: AppBundle\Entity\ProductFilters
+        mappedBy: products
+        joinColumn:
+          name: product_id
+          nullable: true
+          referencedColumnName: id
+          onDelete: CASCADE
   fields:
     name:
       type: string

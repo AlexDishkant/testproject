@@ -13,6 +13,10 @@ App\Entity\Catalog:
         unsigned: true
       generator:
         strategy: IDENTITY
+  oneToMany:
+    products:
+      targetEntity: App\Entity\Product
+      mappedBy: category
   fields:
     name:
       type: string
