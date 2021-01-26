@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\ProductFilter;
+//use FOS\RestBundle\Controller\AbstractFOSRestController;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,62 +23,67 @@ class ProductController extends AbstractController
         ]);
     }
 
-    public function createProduct(): Response
+    public function createProduct(Request $request): Response
     {
+        $name = $request->request->get('name');
+        $price = $request->request->get('price');
+        $description = $request->request->get('description');
+        $code = $request->request->get('code');
+        $catalogId = $request->request->get('catalogId');
+
+        $product = new Product(
+            $name,
+            $price,
+            $description,
+            $code,
+            $catalogId
+        );
+
         $entityManager = $this->getDoctrine()->getManager();
-
-        $product = new Product();
-        $product->setName('Keyboard');
-        $product->setPrice(1999);
-        $product->setDescription('Ergonomic and stylish!');
-        $product->setCode('Code');
-        $product->setCatalogId(1);
-
         $entityManager->persist($product);
-
         $entityManager->flush();
 
-        return new Response('Saved new product with id '.$product->getId());
+        $data = [
+            'product' => $product,
+        ];
+
+
+        return new Response('Saved new product with id '. ['data'=>$data]);
     }
 
-    public function showAction()
+    public function showAction(): Response
     {
         $product = $this->getDoctrine()
-            ->getRepository('App:Product')
+            ->getRepository(Product::class)
             ->findAll();
+
         $data = [
             'product'=> $product
         ];
 
-
-        return new Response('Show products'.$data);
-
+        //return new Response('Check out this great product: '.$data);
+        var_dump($data);
+        exit;
     }
-
     public function filtersProductList(Request $request): string
     {
 //        написать сервис который по id продукта возвращает массив с фильтрами (ProductFilters) для этого продукта
         $id = $request->request->get("id");
-        
-        $product = $this->getDoctrine()->getRepository('App:Product')->findOneById($id);
+        $product = $this->getDoctrine()->getRepository(ProductRepository::class)->findOneBy($id);
+
         $productFilter = $request->request->get("filterGroupCode");
 
-        $productFilter = new ProductFilter(
-
-        );
-
-        $product->findOneById($product);
+        $productFilter->findOneById($product);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($productFilter);
         $entityManager->flush();
 
         $data = [
-            'filterGroupCode' => $productFilter,
+            'productFilter' => $productFilter,
         ];
 
-        return new Response('Hello '. $product->getfilterGroupCode("id"));
+        return new Response('Hello ' . $data);
 
     }
-
 
 }

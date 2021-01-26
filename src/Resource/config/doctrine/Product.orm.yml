@@ -16,7 +16,7 @@ Acme\StoreBundle\Entity\Product:
         targetEntity: AppBundle\Entity\ProductFilters
         mappedBy: products
         joinColumn:
-          name: product_id
+          name: catalog_id
           nullable: true
           referencedColumnName: id
           onDelete: CASCADE
