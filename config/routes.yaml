@@ -1,3 +1,25 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+app_lucky_number:
+  path: /lucky/number
+  controller: App\Controller\LuckyController::number
+
+api_index:
+  path: /index
+  controller: App\Controller\ProductController::index
+
+api_create_product:
+  path: /create/product
+  controller: App\Controller\ProductController::createProduct
+  methods: [GET]
+
+api_show:
+  path: /show
+  controller: App\Controller\ProductController::showAction
+
+api_product_filter_list:
+  path: /filter/list
+  controller: App\Controller\ProductController::filtersProductList
+  methods: [GET]
