@@ -3,9 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\ProductFilter;
-//use FOS\RestBundle\Controller\AbstractFOSRestController;
-use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +45,12 @@ class ProductController extends AbstractController
         ];
 
 
-        return new Response('Saved new product with id '. ['data'=>$data]);
+        //return new Response('Saved new product with id '. ['data'=>$data]);
+//        var_dump($data);
+//        exit;
+        return $this->handleView(
+            $this->view([ 'data' => $data], 200)
+        );
     }
 
     public function showAction(): Response
@@ -64,14 +66,51 @@ class ProductController extends AbstractController
         //return new Response('Check out this great product: '.$data);
         var_dump($data);
         exit;
+
     }
-    public function filtersProductList(Request $request): string
+
+    public function updateAction(int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $product = $entityManager->getRepository(Product::class)->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+
+        $product->setName('New product name!');
+        $entityManager->flush();
+
+        return $this->redirectToRoute('product_show', [
+            'id' => $product->getId()
+        ]);
+    }
+
+    public function deleteAction(Request $request)
+    {
+        $id = $request->request->get('id');
+        $sn = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()->getRepository('App:Product')->findOneById($id);
+        if (!$product) {
+            return $this->view("Product not found", Response::HTTP_NOT_FOUND);
+        }
+        else {
+            $sn->remove($product);
+            $sn->flush();
+        }
+        return $this->view("**********Deleted successfully**********", Response::HTTP_OK);
+    }
+
+    public function filtersProductList(Request $request): Response
     {
 //        написать сервис который по id продукта возвращает массив с фильтрами (ProductFilters) для этого продукта
         $id = $request->request->get("id");
-        $product = $this->getDoctrine()->getRepository(ProductRepository::class)->findOneBy($id);
 
-        $productFilter = $request->request->get("filterGroupCode");
+        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy($id);
+
+        $productFilter = $request->request->get("productFilter");
 
         $productFilter->findOneById($product);
         $entityManager = $this->getDoctrine()->getManager();
