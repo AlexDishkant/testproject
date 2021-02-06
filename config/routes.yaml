@@ -13,11 +13,19 @@ api_index:
 api_create_product:
   path: /create/product
   controller: App\Controller\ProductController::createProduct
-  methods: [GET]
 
 api_show:
-  path: /show
   controller: App\Controller\ProductController::showAction
+  path: /show
+
+api_update:
+  path: /update
+  controller: App\Controller\ProductController::updateAction
+
+api_product_delete:
+  path: /product/delete
+  controller: App\Controller\ProductController::deleteAction
+  methods: [GET]
 
 api_product_filter_list:
   path: /filter/list

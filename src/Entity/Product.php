@@ -52,7 +52,7 @@ class Product
      * @param $catalogId
      */
 
-    public function __construct ($name, $description, $price, $code, $catalogId)
+    public function __construct (string $name, string $description, int $price, int $code, int $catalogId)
     {
         $this->setName($name);
         $this->setPrice($price);
@@ -71,7 +71,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): Product
+    public function setName( $name): Product
     {
         $this->name = $name;
 
@@ -83,7 +83,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(int $price): Product
+    public function setPrice($price): Product
     {
         $this->price = $price;
 
@@ -95,7 +95,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): Product
+    public function setDescription($description): Product
     {
         $this->description = $description;
 
@@ -107,7 +107,7 @@ class Product
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode($code): self
     {
         $this->code = $code;
 
@@ -119,7 +119,7 @@ class Product
         return $this->catalogId;
     }
 
-    public function setCatalogId(int $catalogId): self
+    public function setCatalogId($catalogId): self
     {
         $this->catalogId = $catalogId;
 
