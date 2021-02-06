@@ -20,7 +20,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="integer")
@@ -42,17 +42,36 @@ class Product
      */
     private $catalogId;
 
+
+    /**
+     * @ORM\column(type="integer")
+     * @param $name
+     * @param $description
+     * @param $price
+     * @param $code
+     * @param $catalogId
+     */
+
+    public function __construct ($name, $description, $price, $code, $catalogId)
+    {
+        $this->setName($name);
+        $this->setPrice($price);
+        $this->setDescription($description);
+        $this->setCode($code);
+        $this->setCatalogId($catalogId);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): Product
     {
         $this->name = $name;
 
@@ -64,7 +83,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(int $price): Product
     {
         $this->price = $price;
 
@@ -76,7 +95,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): Product
     {
         $this->description = $description;
 

@@ -19,9 +19,9 @@ final class Version20210121104912 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
-        $this->addSql('CREATE TABLE catalog (id INT NOT NULL, name VARCHAR(255) NOT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE product (id INT NOT NULL, name VARCHAR(255) NOT NULL, price INT NOT NULL, description VARCHAR(255) NOT NULL, code INT NOT NULL, catalog_id INT NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE product_filter (id INT NOT NULL, filter_group_code VARCHAR(255) NOT NULL, brand VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE catalog (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, price INT NOT NULL, description VARCHAR(255) NOT NULL, code INT NOT NULL, catalog_id INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE product_filter (id INT NOT NULL AUTO_INCREMENT, filter_group_code VARCHAR(255) NOT NULL, brand VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
     }
 
     public function down(Schema $schema) : void
