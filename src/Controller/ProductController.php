@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Catalog;
 use App\Entity\Product;
+use App\Repository\CatalogRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\  AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Serializer;
 
 class ProductController extends AbstractController
 {
+
     /**
      * @Route("/product", name="product")
      */
@@ -22,35 +26,38 @@ class ProductController extends AbstractController
 
     public function createProduct(Request $request): Response
     {
-        $name = $request->request->get('name');
-        $price = $request->request->get('price');
-        $description = $request->request->get('description');
-        $code = $request->request->get('code');
-        $catalogId = $request->request->get('catalogId');
+        $name = $request->query->get('name');
+        $price = $request->query->get('price');
+        $description = $request->query->get('description');
+        $code = $request->query->get('code');
+        $catalogId = $request->query->get('catalogId');
+
+        $catalog = $this->getDoctrine()->getRepository('App:Product')->findOneBy([$catalogId]);
 
         $product = new Product(
             $name,
             $price,
             $description,
             $code,
-            $catalogId
+            $catalog
         );
 
+        $catalog->addProduct($product);
+        //$jsonContent = $serializer->serialize($product, 'json');
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($product);
         $entityManager->flush();
 
+
         $data = [
-            'product' => $product,
+            'catalog' => $catalog,
         ];
 
+        return new Response('Saved new product with id '. ['data'=>$data]);
 
-        //return new Response('Saved new product with id '. ['data'=>$data]);
-//        var_dump($data);
-//        exit;
-        return $this->handleView(
-            $this->view([ 'data' => $data], 200)
-        );
+//        return $this->handleView(
+//            $this->view([ 'data' => $data], 200)
+//        );
     }
 
     public function showAction(): Response
@@ -69,8 +76,9 @@ class ProductController extends AbstractController
 
     }
 
-    public function updateAction(int $id): Response
+    public function updateAction(Request $request): Response
     {
+        $id = $request->query->get('id');
         $entityManager = $this->getDoctrine()->getManager();
         $product = $entityManager->getRepository(Product::class)->find($id);
 
@@ -83,46 +91,45 @@ class ProductController extends AbstractController
         $product->setName('New product name!');
         $entityManager->flush();
 
-        return $this->redirectToRoute('product_show', [
-            'id' => $product->getId()
-        ]);
+        return new Response("*********Product is updated!!!**********", Response::HTTP_OK);
     }
 
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         $id = $request->request->get('id');
         $sn = $this->getDoctrine()->getManager();
         $product = $this->getDoctrine()->getRepository('App:Product')->findOneById($id);
+
         if (!$product) {
-            return $this->view("Product not found", Response::HTTP_NOT_FOUND);
+            return new Response("Product not found", Response::HTTP_NOT_FOUND);
         }
         else {
             $sn->remove($product);
             $sn->flush();
         }
-        return $this->view("**********Deleted successfully**********", Response::HTTP_OK);
+        return new Response("**********Deleted successfully**********", Response::HTTP_OK);
     }
 
-    public function filtersProductList(Request $request): Response
-    {
+//    public function filtersProductList(Request $request): Response
+//    {
 //        написать сервис который по id продукта возвращает массив с фильтрами (ProductFilters) для этого продукта
-        $id = $request->request->get("id");
-
-        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy($id);
-
-        $productFilter = $request->request->get("productFilter");
-
-        $productFilter->findOneById($product);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($productFilter);
-        $entityManager->flush();
-
-        $data = [
-            'productFilter' => $productFilter,
-        ];
-
-        return new Response('Hello ' . $data);
-
-    }
+//        $id = $request->query->get("id");
+//
+//        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy($id);
+//
+//        $productFilter = $request->query->get("productFilter");
+//
+//        $productFilter->findOneById($product);
+//        $entityManager = $this->getDoctrine()->getManager();
+//        $entityManager->persist($productFilter);
+//        $entityManager->flush();
+//
+//        $data = [
+//            'productFilter' => $productFilter,
+//        ];
+//
+//        return new Response('Hello ' . $data);
+//
+//    }
 
 }

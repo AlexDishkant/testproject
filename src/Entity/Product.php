@@ -37,28 +37,35 @@ class Product
      */
     private $code;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $catalogId;
-
+    private $catalog;
 
     /**
      * @ORM\column(type="integer")
-     * @param $name
-     * @param $description
-     * @param $price
-     * @param $code
-     * @param $catalogId
+     * @param string $name
+     * @param int $price
+     * @param string $description
+     * @param int $code
+     * @param Catalog $catalog
      */
 
-    public function __construct (string $name, string $description, int $price, int $code, int $catalogId)
+    public function __construct (string $name, int $price, string $description, int $code, Catalog $catalog)
     {
         $this->setName($name);
         $this->setPrice($price);
         $this->setDescription($description);
         $this->setCode($code);
-        $this->setCatalogId($catalogId);
+        $this->catalog = $catalog;
+
+    }
+
+    public function getCatalog(Catalog $catalog): Catalog
+    {
+        return $this->catalog;
+    }
+
+    public function setCatalog(Catalog $catalog)
+    {
+        $this->catalog = $catalog;
     }
 
     public function getId(): ?int
@@ -66,7 +73,7 @@ class Product
         return $this->id;
     }
 
-    public function getName()
+    public function getName(): ?int
     {
         return $this->name;
     }
@@ -102,26 +109,14 @@ class Product
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): ?int
     {
         return $this->code;
     }
 
-    public function setCode($code): self
+    public function setCode($code): Product
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    public function getCatalogId(): ?int
-    {
-        return $this->catalogId;
-    }
-
-    public function setCatalogId($catalogId): self
-    {
-        $this->catalogId = $catalogId;
 
         return $this;
     }
