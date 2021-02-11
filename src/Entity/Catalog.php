@@ -27,6 +27,30 @@ class Catalog
      */
     private $code;
 
+    private $products;
+
+    public function __construct (string $name, int $code)
+    {
+        $this->setName($name);
+        $this->setCode($code);
+    }
+
+    public function AddProduct(Product $product)
+    {
+        $this->products->Add($product);
+    }
+
+    public function removeProduct(Product $product)
+    {
+        $this->products->removeElement($product);
+    }
+
+    public function getProduct()
+    {
+        return $this->products;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

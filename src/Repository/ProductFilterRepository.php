@@ -19,22 +19,22 @@ class ProductFilterRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductFilter::class);
     }
 
-    // /**
-    //  * @return ProductFilter[] Returns an array of ProductFilter objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return ProductFilter[] Returns an array of ProductFilter objects
+     */
+
+    public function findOneById($id)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->setParameter('val', $id)
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?ProductFilter

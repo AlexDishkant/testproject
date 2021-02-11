@@ -16,7 +16,7 @@ App\Entity\Catalog:
   oneToMany:
     products:
       targetEntity: App\Entity\Product
-      mappedBy: category
+      mappedBy: product
   fields:
     name:
       type: string

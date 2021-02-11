@@ -7,6 +7,11 @@ parameters:
     locale: 'en'
 
 services:
+    get_set_method_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        public: false
+        tags: [ serializer.normalizer ]
+
     App\Controller\ProductController:
         class: App\Controller\ProductController
         autowire: true # or define your controller constructor and configure its arguments explicitly
